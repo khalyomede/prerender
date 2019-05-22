@@ -1,0 +1,40 @@
+{
+	"name": "@khalyomede/prerender",
+	"version": "0.1.0",
+	"description": "Prerenders your website into a static, SEO friendly, HTML version.",
+	"main": "lib/main.js",
+	"repository": "https://github.com/khalyomede/prerender",
+	"author": "Khalyomede <khalyomede@gmail.com>",
+	"license": "MIT",
+	"private": false,
+	"devDependencies": {
+		"@babel/core": "7.*",
+		"@babel/preset-env": "7.*",
+		"@babel/register": "7.*",
+		"@stryker-mutator/babel-transpiler": "^2.0.0",
+		"@stryker-mutator/core": "2.*",
+		"@stryker-mutator/javascript-mutator": "^2.0.0",
+		"@stryker-mutator/mocha-framework": "^2.0.0",
+		"@stryker-mutator/mocha-runner": "^2.0.0",
+		"@types/node": "12.*",
+		"chai": "4.*",
+		"gulp": "4.*",
+		"gulp-plumber": "1.*",
+		"gulp-typescript": "5.*",
+		"mocha": "6.*",
+		"nyc": "14.*",
+		"typescript": "3.*"
+	},
+	"scripts": {
+		"start": "gulp start",
+		"test": "nyc mocha test --require @babel/register && npx stryker run"
+	},
+	"dependencies": {
+		"is-url": "1.*"
+	},
+	"files": [
+		"lib/main.js",
+		"lib/Prerendering.js",
+		"lib/Route.js"
+	]
+}

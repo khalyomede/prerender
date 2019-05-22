@@ -1,0 +1,4 @@
+node_modules
+.nyc_output
+yarn-error.log
+.stryker-tmp
