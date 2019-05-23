@@ -10,4 +10,5 @@ const routes = [
 
 prerendering.setFolder("prerendered");
 prerendering.setRoutes(routes);
+prerendering.setDebugMode(true);
 prerendering.start();
