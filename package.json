@@ -9,8 +9,11 @@
 	"private": false,
 	"devDependencies": {
 		"@babel/core": "7.*",
+		"@babel/node": "7.*",
+		"@babel/plugin-transform-runtime": "7.*",
 		"@babel/preset-env": "7.*",
 		"@babel/register": "7.*",
+		"@babel/runtime": "7.*",
 		"@stryker-mutator/babel-transpiler": "^2.0.0",
 		"@stryker-mutator/core": "2.*",
 		"@stryker-mutator/javascript-mutator": "^2.0.0",
@@ -27,10 +30,17 @@
 	},
 	"scripts": {
 		"start": "gulp start",
-		"test": "nyc mocha test --require @babel/register && npx stryker run"
+		"test": "nyc mocha test --require @babel/register && npx stryker run",
+		"babel": "babel-node"
 	},
 	"dependencies": {
-		"is-url": "1.*"
+		"cli-color": "1.*",
+		"fancy-log": "1.*",
+		"is-url": "1.*",
+		"mkdirp": "0.*",
+		"pretty-bytes": "5.*",
+		"pretty-ms": "5.*",
+		"puppeteer": "1.*"
 	},
 	"files": [
 		"lib/main.js",
