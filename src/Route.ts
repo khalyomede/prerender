@@ -18,6 +18,13 @@ class Route {
 	 * @return {Route}
 	 * @throws {TypeError}
 	 * @throws {Error}
+	 * @example
+	 * import { Route } from "@khalyomede/prerender";
+	 *
+	 * const route = new Route();
+	 *
+	 * route.setUrl("/about");
+	 * @since 0.1.0
 	 */
 	public setUrl(url: string): this {
 		this._url = url;
@@ -34,6 +41,13 @@ class Route {
 	 * @return {Route}
 	 * @throws {TypeError}
 	 * @throws {Error}
+	 * @example
+	 * import { Route } from "@khalyomede/prerender";
+	 *
+	 * const route = new Route();
+	 *
+	 * route.setSelectorsToWaitFor(["p.flow-text", "img.materialboxed"]);
+	 * @since 0.1.0
 	 */
 	public setSelectorsToWaitFor(selectors: string[]): this {
 		this._selectorsToWaitFor = [];
@@ -52,6 +66,13 @@ class Route {
 	 * @return {Route}
 	 * @throws {TypeError}
 	 * @throws {Error}
+	 * @example
+	 * import { Route } from "@khalyomede/prerender";
+	 *
+	 * const route = new Route();
+	 *
+	 * route.addSelectorToWaitFor("button.btn-flat");
+	 * @since 0.1.0
 	 */
 	public addSelectorToWaitFor(selector: string): this {
 		this._selectorToWaitFor = selector;
@@ -67,6 +88,12 @@ class Route {
 	 * Returns the url to prerender.
 	 *
 	 * @return {String}
+	 * @example
+	 * import { Route } from "@khalyomede/prerender";
+	 *
+	 * const route = new Route();
+	 * const url = route.getUrl();
+	 * @since 0.1.0
 	 */
 	public getUrl(): string {
 		return this._url;
@@ -76,9 +103,35 @@ class Route {
 	 * Returns the selectors to wait before prerendering the url.
 	 *
 	 * @return {Array<String>}
+	 * @example
+	 * import { Route } from "@khalyomede/prerender";
+	 *
+	 * const route = new Route();
+	 * const selectors = route.getSelectorsToWaitFor();
+	 * @since 0.1.0
 	 */
 	public getSelectorsToWaitFor(): string[] {
 		return this._selectorsToWaitFor;
+	}
+
+	/**
+	 * Return true if the Route has some selectors, else returns false.
+	 *
+	 * @return {Boolean}
+	 * @example
+	 * import { Route } from "@khalyomede/prerender";
+	 *
+	 * const route = new Route();
+	 *
+	 * if (route.hasSelectorsToWaitFor()) {
+	 * 	console.log("has selectors");
+	 * } else {
+	 * 	console.log("has not selectors");
+	 * }
+	 * @since 0.1.0
+	 */
+	public hasSelectorsToWaitFor(): boolean {
+		return this._selectorsToWaitFor.length !== 0;
 	}
 
 	/**
@@ -96,14 +149,10 @@ class Route {
 			throw new Error("the url should be filled");
 		}
 
-		if (!this._url.startsWith("http://") && !this._url.startsWith("https://")) {
+		if (isUrl(this._url)) {
 			throw new Error(
-				`the url should starts with http:// or https:// (got: ${this._url})`
+				"do not use an url but only specify the route (and use Prerendering.setBaseUrl() to pass your base url instead)"
 			);
-		}
-
-		if (!isUrl(this._url)) {
-			throw new TypeError(`invalid url (got: ${this._url})`);
 		}
 	}
 
