@@ -24,11 +24,18 @@ describe("Route", () => {
 	});
 
 	it("should set the url correctly", () => {
-		const url = "http://example.com";
+		const url = "/";
 		const expected = url;
 		const actual = new Route().setUrl(url)._url;
 
 		expect(actual).to.be.equal(expected);
+	});
+
+	it("should return an instance of Route after setting an url", () => {
+		const expected = Route;
+		const actual = new Route().setUrl("/");
+
+		expect(actual).to.be.instanceOf(expected);
 	});
 
 	it("should set one selector correctly", () => {
@@ -40,6 +47,13 @@ describe("Route", () => {
 		expect(actual).to.be.deep.equal(expected);
 	});
 
+	it("should return an instance of Route when adding a selector to wait for", () => {
+		const expected = Route;
+		const actual = new Route().addSelectorToWaitFor("p.flow-text");
+
+		expect(actual).to.be.instanceOf(expected);
+	});
+
 	it("should add multiple selectors correctly", () => {
 		const selector1 = "p.flow-text";
 		const selector2 = "img.materialboxed";
@@ -49,6 +63,16 @@ describe("Route", () => {
 			.addSelectorToWaitFor(selector2)._selectorsToWaitFor;
 
 		expect(actual).to.be.deep.equal(expected);
+	});
+
+	it("should return an instance of Route after setting routes", () => {
+		const expected = Route;
+		const actual = new Route().setSelectorsToWaitFor([
+			"p.flow-text",
+			"img.materialboxed"
+		]);
+
+		expect(actual).to.be.instanceOf(expected);
 	});
 
 	it("should set multiples selectors correctly", () => {
@@ -85,7 +109,7 @@ describe("Route", () => {
 	});
 
 	it("should return the correct url", () => {
-		const url = "http://example.com";
+		const url = "/";
 		const expected = url;
 		const actual = new Route().setUrl(url).getUrl();
 
@@ -100,6 +124,20 @@ describe("Route", () => {
 			.getSelectorsToWaitFor();
 
 		expect(actual).to.be.deep.equal(expected);
+	});
+
+	it("should return true if the route has some selectors", () => {
+		const actual = new Route()
+			.addSelectorToWaitFor("p.flow-text")
+			.hasSelectorsToWaitFor();
+
+		expect(actual).to.be.true;
+	});
+
+	it("should return false if the route does not have any selectors", () => {
+		const actual = new Route().hasSelectorsToWaitFor();
+
+		expect(actual).to.be.false;
 	});
 
 	it("should throw a TypeError if setting an url which is not a string", () => {
@@ -127,34 +165,6 @@ describe("Route", () => {
 		expect(function() {
 			new Route().setUrl("");
 		}).to.throw("the url should be filled");
-	});
-
-	it("should throw an Error if the url does not starts with http://", () => {
-		expect(function() {
-			new Route().setUrl("example.com");
-		}).to.throw(Error);
-	});
-
-	it("should throw the correct error message if the url does not starts with http:// or https://", () => {
-		const url = "example.com";
-
-		expect(function() {
-			new Route().setUrl(url);
-		}).to.throw(`the url should starts with http:// or https:// (got: ${url})`);
-	});
-
-	it("should throw an error if setting an invalid url", () => {
-		expect(function() {
-			new Route().setUrl("https://example");
-		}).to.throw(Error);
-	});
-
-	it("should throw the correct error if setting an invalid url", () => {
-		const url = "https://example";
-
-		expect(function() {
-			new Route().setUrl(url);
-		}).to.throw(`invalid url (got: ${url})`);
 	});
 
 	it("should throw an error if adding a selector which is not string", () => {
@@ -217,5 +227,19 @@ describe("Route", () => {
 		expect(function() {
 			new Route().setSelectorsToWaitFor(["p.flow-text", "", "button.btn-flat"]);
 		}).to.throw("the selector to wait for should be filled");
+	});
+
+	it("should throw an Error if the url is... a proper url", () => {
+		expect(function() {
+			new Route().setUrl("http://example.com");
+		}).to.throw(Error);
+	});
+
+	it("should throw the correct message if the url is... a proper url", () => {
+		expect(function() {
+			new Route().setUrl("http://example.com");
+		}).to.throw(
+			"do not use an url but only specify the route (and use Prerendering.setBaseUrl() to pass your base url instead)"
+		);
 	});
 });
