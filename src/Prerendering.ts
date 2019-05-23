@@ -6,11 +6,13 @@ class Prerendering {
 	protected _route: Route;
 	protected _routes: Route[];
 	protected _folderPath: string;
+	protected _debugMode: boolean;
 
 	public constructor() {
 		this._route = null;
 		this._routes = [];
 		this._folderPath = "";
+		this._debugMode = false;
 	}
 
 	/**
@@ -52,6 +54,24 @@ class Prerendering {
 	}
 
 	/**
+	 * Return the routes to prerender.
+	 *
+	 * @return {Array<Route>}
+	 */
+	public getRoutes(): Route[] {
+		return this._routes;
+	}
+
+	/**
+	 * Prerenders the routes by creating a static version and saving them into the desired folder.
+	 */
+	public start(): this {
+		this._checkHasFolderPath();
+
+		return this;
+	}
+
+	/**
 	 *
 	 * @throws {Error}
 	 */
@@ -61,6 +81,15 @@ class Prerendering {
 		this._checkFolderPath();
 
 		return this;
+	}
+
+	/**
+	 * Return the folder path.
+	 *
+	 * @return {String}
+	 */
+	public getFolderPath(): string {
+		return this._folderPath;
 	}
 
 	/**
@@ -101,6 +130,14 @@ class Prerendering {
 		) {
 			throw new Error(
 				`the folder path should be a directory (got: ${this._folderPath})`
+			);
+		}
+	}
+
+	protected _checkHasFolderPath(): void {
+		if (this._folderPath.trim().length === 0) {
+			throw new Error(
+				"no folder path found (did you forget to use Prerendering.setFolderPath() ?)"
 			);
 		}
 	}
