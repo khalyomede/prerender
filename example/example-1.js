@@ -1,14 +1,13 @@
-import { Prerendering, Route } from "@khalyomede/prerender";
+import { Prerendering, Route } from "../lib/main";
 
+const home = new Route().setUrl("/").addSelectorToWaitFor("h1");
+const about = new Route().setUrl("/about").addSelectorToWaitFor("p");
+const routes = [home, about];
 const prerendering = new Prerendering();
-const routes = [
-	new Route().setUrl("http://example.com"),
-	new Route()
-		.setUrl("http://example.com/about")
-		.setSelectorToWaitFor("p.flow-text")
-];
 
-prerendering.setFolder("prerendered");
+prerendering.setFolderPath("prerendered");
+prerendering.setBaseUrl("http://example.com");
 prerendering.setRoutes(routes);
 prerendering.setDebugMode(true);
+prerendering.settimeout(10000);
 prerendering.start();
