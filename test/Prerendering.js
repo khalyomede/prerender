@@ -23,6 +23,13 @@ describe("prerendering", () => {
 		expect(actual).to.be.equal(expected);
 	});
 
+	it("should initialize the debug mode to false", () => {
+		const expected = false;
+		const actual = new Prerendering()._debugMode;
+
+		expect(actual).to.be.equal(expected);
+	});
+
 	it("should correctly add a route", () => {
 		const route = new Route().setUrl("http://example.com");
 		const expected = [route];
@@ -37,6 +44,17 @@ describe("prerendering", () => {
 		const routes = [route1, route2];
 		const expected = routes;
 		const actual = new Prerendering().setRoutes(routes)._routes;
+
+		expect(actual).to.be.deep.equal(expected);
+	});
+
+	it("should correctly return the routes", () => {
+		const routes = [
+			new Route().setUrl("http://example.com"),
+			new Route().setUrl("http://example.com/about")
+		];
+		const expected = routes;
+		const actual = new Prerendering().setRoutes(routes).getRoutes();
 
 		expect(actual).to.be.deep.equal(expected);
 	});
@@ -57,6 +75,14 @@ describe("prerendering", () => {
 		const folderPath = __dirname + "/../example";
 		const expected = folderPath;
 		const actual = new Prerendering().setFolderPath(folderPath)._folderPath;
+
+		expect(actual).to.be.equal(expected);
+	});
+
+	it("should return the correct folder path", () => {
+		const folderPath = __dirname + "/../example";
+		const expected = folderPath;
+		const actual = new Prerendering().setFolderPath(folderPath).getFolderPath();
 
 		expect(actual).to.be.equal(expected);
 	});
@@ -166,5 +192,19 @@ describe("prerendering", () => {
 		expect(function() {
 			new Prerendering().setFolderPath(filePath);
 		}).to.throw(`the folder path should be a directory (got: ${filePath})`);
+	});
+
+	it("should throw an Error if the folder path has not been set before starting prerendering", () => {
+		expect(function() {
+			new Prerendering().start();
+		}).to.throw(Error);
+	});
+
+	it("should throw the correct message if the folder path has not been set before starting prerendering", () => {
+		expect(function() {
+			new Prerendering().start();
+		}).to.throw(
+			"no folder path found (did you forget to use Prerendering.setFolderPath() ?)"
+		);
 	});
 });
