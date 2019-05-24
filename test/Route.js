@@ -146,6 +146,41 @@ describe("Route", () => {
 		expect(actual).to.be.false;
 	});
 
+	it("should return the same url if it has no query string", () => {
+		const url = "/shoes";
+		const expected = url;
+		const actual = new Route().setUrl(url).getCleanUrl();
+
+		expect(actual).to.be.equal(expected);
+	});
+
+	it("should return the url without query string if it has query string", () => {
+		const expected = "/shoes";
+		const actual = new Route()
+			.setUrl("/shoes?page=42&sort=price")
+			.getCleanUrl();
+
+		expect(actual).to.be.equal(expected);
+	});
+
+	it("should return the url without hash queries if it has has queries", () => {
+		const expected = "/shoes";
+		const actual = new Route()
+			.setUrl("/shoes#page=42&sort=price")
+			.getCleanUrl();
+
+		expect(actual).to.be.equal(expected);
+	});
+
+	it("should return the url without hash queries and without query strings if it has both", () => {
+		const expected = "/shoes";
+		const actual = new Route()
+			.setUrl("/shoes?page=42&sort=price#view=tree&model=shoes.shoes")
+			.getCleanUrl();
+
+		expect(actual).to.be.equal(expected);
+	});
+
 	it("should throw a TypeError if setting an url which is not a string", () => {
 		expect(function() {
 			new Route().setUrl(42);
