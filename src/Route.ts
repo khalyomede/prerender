@@ -4,11 +4,13 @@ class Route {
 	protected _url: string;
 	protected _selectorToWaitFor: string;
 	protected _selectorsToWaitFor: string[];
+	protected _active: boolean;
 
 	public constructor() {
 		this._url = "";
 		this._selectorToWaitFor = "";
 		this._selectorsToWaitFor = [];
+		this._active = true;
 	}
 
 	/**
@@ -132,6 +134,57 @@ class Route {
 	 */
 	public hasSelectorsToWaitFor(): boolean {
 		return this._selectorsToWaitFor.length !== 0;
+	}
+
+	/**
+	 * Set the route as active (only active routes are prerendered).
+	 *
+	 * @return {Route}
+	 * @example
+	 * import { Route } from "@khalyomede/prerender";
+	 *
+	 * const route = new Route();
+	 *
+	 * route.setActive();
+	 * @since 0.1.0
+	 */
+	public setActive(): this {
+		this._active = true;
+
+		return this;
+	}
+
+	/**
+	 * Set the route as inactive (only active routes are prerendered).
+	 *
+	 * @return {Route}
+	 * @example
+	 * import { Route } from "@khalyomede/prerender";
+	 *
+	 * const route = new Route();
+	 *
+	 * route.setInactive();
+	 * @since 0.1.0
+	 */
+	public setInactive(): this {
+		this._active = false;
+
+		return this;
+	}
+
+	/**
+	 * Get the active state of the route.
+	 *
+	 * @return {Boolean}
+	 * @example
+	 * import { Route } from "@khalyomede/prerender";
+	 *
+	 * const route = new Route();
+	 * const activeState = route.getActiveState();
+	 * @since 0.1.0
+	 */
+	public getActiveState(): boolean {
+		return this._active;
 	}
 
 	/**
