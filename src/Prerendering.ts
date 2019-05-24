@@ -2,7 +2,7 @@ import Route from "./Route";
 import { existsSync, statSync } from "fs";
 import { launch } from "puppeteer";
 import * as prettyMs from "pretty-ms";
-import { info, error } from "fancy-log";
+import * as fancyFormatLog from "fancy-format-log";
 import * as cliColor from "cli-color";
 import * as prettyBytes from "pretty-bytes";
 import { writeFileSync } from "fs";
@@ -16,6 +16,7 @@ class Prerendering {
 	protected _debugMode: boolean;
 	protected _baseUrl: string;
 	protected _timeout: number;
+	protected _logger;
 
 	public constructor() {
 		this._route = null;
@@ -23,6 +24,11 @@ class Prerendering {
 		this._folderPath = "";
 		this._debugMode = false;
 		this._baseUrl = "";
+		this._logger = fancyFormatLog({
+			format: "YYYY-MM-DD HH:mm:ss:ms"
+		});
+
+		this._addColorsToCliColor();
 	}
 
 	/**
@@ -199,7 +205,7 @@ class Prerendering {
 		);
 
 		if (this.inDebugMode()) {
-			info("opening Chrome...");
+			this._logger.info("opening Chrome...");
 		}
 
 		let start = new Date().getTime();
@@ -215,18 +221,22 @@ class Prerendering {
 		let duration = cliColor.blackBright(prettyMs(new Date().getTime() - start));
 
 		if (this.inDebugMode()) {
-			info(`opened Chrome (${duration})`);
+			this._logger.info(`opened Chrome (${duration})`);
 		}
 
 		for (const route of routes) {
 			const routeUrl = this.getBaseUrl() + route.getUrl();
-			const coloredRouteUrl = cliColor.yellow(routeUrl);
+			const coloredRouteUrl = cliColor.green(routeUrl);
 			const contentPath =
-				this.getFolderPath() + "/" + route.getUrl() + "/index.html";
+				this.getFolderPath() +
+				route.getCleanUrl().replace(/^\/$/, "") +
+				"/index.html";
+			const coloredContentPath = cliColor.green(contentPath);
+			const contentFolderPath = dirname(contentPath);
 			const timeout = this.gettimeout();
 
 			if (this.inDebugMode()) {
-				info("opening a tab...");
+				this._logger.info("opening a tab...");
 			}
 
 			start = new Date().getTime();
@@ -236,8 +246,8 @@ class Prerendering {
 			duration = cliColor.blackBright(prettyMs(new Date().getTime() - start));
 
 			if (this.inDebugMode()) {
-				info(`opened a tab (${duration})`);
-				info(`navigating to ${coloredRouteUrl}...`);
+				this._logger.info(`opened a tab (${duration})`);
+				this._logger.info(`navigating to ${coloredRouteUrl}...`);
 			}
 
 			start = new Date().getTime();
@@ -248,7 +258,7 @@ class Prerendering {
 				});
 			} catch (exception) {
 				if (this.inDebugMode()) {
-					error(exception);
+					this._logger.error(exception);
 				}
 
 				continue;
@@ -257,14 +267,17 @@ class Prerendering {
 			duration = cliColor.blackBright(prettyMs(new Date().getTime() - start));
 
 			if (this.inDebugMode()) {
-				info(`navigated to ${coloredRouteUrl} (${duration})`);
+				this._logger.info(`successfully navigated (${duration})`);
 			}
 
 			if (route.hasSelectorsToWaitFor()) {
 				const selectors = route.getSelectorsToWaitFor();
+				const coloredSelectorsCount = cliColor.orange(selectors.length);
 
 				if (this.inDebugMode()) {
-					info(`waiting for ${selectors.length} selectors...`);
+					this._logger.info(
+						`waiting for ${coloredSelectorsCount} selectors...`
+					);
 				}
 
 				start = new Date().getTime();
@@ -279,7 +292,7 @@ class Prerendering {
 					await Promise.all(selectorsToWaitFor);
 				} catch (exception) {
 					if (this.inDebugMode()) {
-						error(exception);
+						this._logger.error(exception);
 					}
 
 					continue;
@@ -288,40 +301,50 @@ class Prerendering {
 				duration = cliColor.blackBright(prettyMs(new Date().getTime() - start));
 
 				if (this.inDebugMode()) {
-					info(`found the selectors (${duration})`);
+					this._logger.info(`found the selectors (${duration})`);
 				}
 			}
 
 			if (this.inDebugMode()) {
-				info("copying the HTML...");
+				this._logger.info("copying the HTML...");
 			}
 
 			start = new Date().getTime();
 
 			const html = await page.content();
-			const bytes = prettyBytes(html.length);
+			const coloredBytes = cliColor.orange(prettyBytes(html.length));
 
 			duration = cliColor.blackBright(prettyMs(new Date().getTime() - start));
 
 			if (this.inDebugMode()) {
-				info(`copied ${bytes} of HTML (${duration})`);
-				info(`saving to file...`);
+				this._logger.info(`copied ${coloredBytes} of HTML (${duration})`);
+				this._logger.info(`saving into ${coloredContentPath}...`);
 			}
 
 			start = new Date().getTime();
 
-			mkdirp.sync(dirname(contentPath));
+			mkdirp.sync(contentFolderPath);
 			writeFileSync(contentPath, html);
 
 			duration = cliColor.blackBright(prettyMs(new Date().getTime() - start));
 
 			if (this.inDebugMode()) {
-				info(`saved the file (${duration})`);
+				this._logger.info(`saved the file (${duration})`);
+				this._logger.info("closing the tab...");
+				start = new Date().getTime();
+			}
+
+			await page.close();
+
+			if (this.inDebugMode()) {
+				duration = cliColor.blackBright(prettyMs(new Date().getTime() - start));
+
+				this._logger.info(`closed the tab (${duration})`);
 			}
 		}
 
 		if (this.inDebugMode()) {
-			info("closing Chrome...");
+			this._logger.info("closing Chrome...");
 		}
 
 		start = new Date().getTime();
@@ -331,7 +354,7 @@ class Prerendering {
 		duration = cliColor.blackBright(prettyMs(new Date().getTime() - start));
 
 		if (this.inDebugMode()) {
-			info(`closed Chrome (${duration})`);
+			this._logger.info(`closed Chrome (${duration})`);
 		}
 
 		return this;
@@ -516,6 +539,10 @@ class Prerendering {
 				`the timeout cannot be lower than 0 (got: ${this._timeout})`
 			);
 		}
+	}
+
+	protected _addColorsToCliColor(): void {
+		cliColor.orange = cliColor.xterm(203);
 	}
 }
 
