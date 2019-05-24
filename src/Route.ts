@@ -1,4 +1,5 @@
 import * as isUrl from "is-url";
+import { parse } from "url";
 
 class Route {
 	protected _url: string;
@@ -99,6 +100,15 @@ class Route {
 	 */
 	public getUrl(): string {
 		return this._url;
+	}
+
+	/**
+	 * Returns the URL without query strings (useful to save a clean filename).
+	 *
+	 * @return {String}
+	 */
+	public getCleanUrl(): string {
+		return parse(this._url).pathname;
 	}
 
 	/**
