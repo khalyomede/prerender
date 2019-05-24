@@ -194,6 +194,10 @@ class Prerendering {
 		this._checkHasFolderPath();
 		this._checkHasBaseUrl();
 
+		const routes = this._routes.filter(
+			route => route.getActiveState() === true
+		);
+
 		if (this.inDebugMode()) {
 			info("opening Chrome...");
 		}
@@ -214,7 +218,7 @@ class Prerendering {
 			info(`opened Chrome (${duration})`);
 		}
 
-		for (const route of this._routes) {
+		for (const route of routes) {
 			const routeUrl = this.getBaseUrl() + route.getUrl();
 			const coloredRouteUrl = cliColor.yellow(routeUrl);
 			const contentPath =
