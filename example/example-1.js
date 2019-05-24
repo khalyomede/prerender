@@ -9,5 +9,4 @@ prerendering.setFolderPath("prerendered");
 prerendering.setBaseUrl("http://example.com");
 prerendering.setRoutes(routes);
 prerendering.setDebugMode(true);
-prerendering.settimeout(10000);
 prerendering.start();
