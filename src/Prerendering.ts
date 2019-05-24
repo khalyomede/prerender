@@ -192,6 +192,7 @@ class Prerendering {
 	 */
 	public async start(): Promise<this> {
 		this._checkHasFolderPath();
+		this._checkHasBaseUrl();
 
 		if (this.inDebugMode()) {
 			info("opening Chrome...");
