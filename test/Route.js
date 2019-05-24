@@ -23,6 +23,12 @@ describe("Route", () => {
 		expect(actual).to.be.deep.equal(expected);
 	});
 
+	it("should initialize the active state of the route to true", () => {
+		const actual = new Route()._active;
+
+		expect(actual).to.be.true;
+	});
+
 	it("should set the url correctly", () => {
 		const url = "/";
 		const expected = url;
@@ -215,6 +221,24 @@ describe("Route", () => {
 		}).to.throw(
 			`the selector to wait for should be a string (got: ${typeOfSelector})`
 		);
+	});
+
+	it("should correctly set the route as active", () => {
+		const actual = new Route().setActive()._active;
+
+		expect(actual).to.be.true;
+	});
+
+	it("should correctly set the route as inactive", () => {
+		const actual = new Route().setInactive()._active;
+
+		expect(actual).to.be.false;
+	});
+
+	it("should correctly get the route active state", () => {
+		const actual = new Route().getActiveState();
+
+		expect(actual).to.be.true;
 	});
 
 	it("should throw an error if setting some empty selectors", () => {
