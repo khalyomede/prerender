@@ -13,4 +13,4 @@ const start = () => {
 };
 const build = series(js);
 
-export { start };
+export { start, build };
