@@ -31,6 +31,7 @@
 	},
 	"scripts": {
 		"start": "gulp start",
+		"build": "gulp build && node script/generate-api-doc.js",
 		"test": "nyc mocha test --require @babel/register && npx stryker run",
 		"babel": "babel-node"
 	},
@@ -38,6 +39,7 @@
 		"cli-color": "1.*",
 		"fancy-format-log": "2.*",
 		"is-url": "1.*",
+		"jsdoc-api": "5.*",
 		"mkdirp": "0.*",
 		"pretty-bytes": "5.*",
 		"pretty-ms": "5.*",
