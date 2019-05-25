@@ -74,7 +74,7 @@ for (const method of methods) {
 		.join("\n");
 
 	headerMarkdown += `- ${method.link}\n`;
-	contentMarkdown += `## ${method.title} (>= v${method.since})\n${
+	contentMarkdown += `## ${method.title}\n(≥ ${method.since}) ${
 		method.description
 	}\n\n**parameters**\n${parameters}\n\n**return**\n{${
 		method.return
