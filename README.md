@@ -34,6 +34,7 @@ npm install --save-dev puppeteer
 ## Usage
 
 - [Simple example](#simple-example)
+- [Saving html files](#saving-html-files)
 - [Add a greater timeout](#add-a-greater-timeout)
 - [Disable logs](#disable-logs)
 - [Prevent some routes to be prerendered](#prevent-some-routes-to-be-prerendered)
@@ -103,6 +104,42 @@ You should see something like this:
 [2019-05-25 00:49:11:035] closed the tab (2ms)
 [2019-05-25 00:49:11:037] closing Chrome...
 [2019-05-25 00:49:11:288] closed Chrome (249ms)
+```
+
+### Saving html files
+
+In this example, you will see that html files (ending with the `.html` extension) can be saved as well.
+
+```javascript
+import { Route, Prerendering } from "../lib/main";
+
+const prerendering = new Prerendering();
+
+prerendering.setBaseUrl("http://example.com");
+prerendering.setFolderPath("prerendered");
+prerendering.setDebugMode(true);
+prerendering.addRoute(new Route().setUrl("/about/us.html"));
+
+prerendering.start();
+```
+
+You should see something like this in console:
+
+```bash
+[2019-05-25 15:15:49:866] opening Chrome...
+[2019-05-25 15:15:49:988] opened Chrome (117ms)
+[2019-05-25 15:15:49:990] opening a tab...
+[2019-05-25 15:15:50:064] opened a tab (74ms)
+[2019-05-25 15:15:50:065] navigating to http://example.com/about/us.html...
+[2019-05-25 15:15:50:331] successfully navigated (265ms)
+[2019-05-25 15:15:50:331] copying the HTML...
+[2019-05-25 15:15:50:338] copied 1.26 kB of HTML (6ms)
+[2019-05-25 15:15:50:339] saving into prerendered/about/us.html...
+[2019-05-25 15:15:50:342] saved the file (2ms)
+[2019-05-25 15:15:50:342] closing the tab...
+[2019-05-25 15:15:50:346] closed the tab (3ms)
+[2019-05-25 15:15:50:347] closing Chrome...
+[2019-05-25 15:15:50:459] closed Chrome (112ms)
 ```
 
 ### Add a greater timeout
