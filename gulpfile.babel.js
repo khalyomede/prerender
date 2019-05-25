@@ -11,5 +11,6 @@ const js = () =>
 const start = () => {
 	watch("src/**/*.ts", js);
 };
+const build = series(js);
 
 export { start };
