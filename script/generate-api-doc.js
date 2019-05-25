@@ -43,7 +43,7 @@ for (const explaination of explainations) {
 	const examples = "examples" in explaination ? explaination.examples : [];
 
 	methods.push({
-		link: `[${name}()](#${name})`,
+		link: `[${name}()](#${name.replace(".", "")})`,
 		title: `${name}()`,
 		description: explaination.description,
 		examples: examples,
