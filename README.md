@@ -2,7 +2,8 @@
 
 Prerenders your website into a static, SEO friendly, HTML version.
 
-[![Build Status](https://travis-ci.com/khalyomede/prerender.svg?branch=master)](https://travis-ci.com/khalyomede/prerender)
+![npm](https://img.shields.io/npm/v/@khalyomede/prerender.svg) ![npm dev dependency version](https://img.shields.io/npm/dependency-version/@khalyomede/prerender/dev/puppeteer.svg) ![NPM](https://img.shields.io/npm/l/@khalyomede/prerender.svg)
+[![Build Status](https://travis-ci.com/khalyomede/prerender.svg?branch=master)](https://travis-ci.com/khalyomede/prerender) ![Snyk Vulnerabilities for npm package](https://img.shields.io/snyk/vulnerabilities/npm/@khalyomede/prerender.svg)
 
 ## Summary
 
