@@ -122,6 +122,7 @@ class Prerendering {
 	 * const prerendering = new Prerendering();
 	 *
 	 * prerendering.setTimeout(10000);
+	 * @since 0.1.0
 	 */
 	public setTimeout(timeout: number): this {
 		this._timeout = timeout;
