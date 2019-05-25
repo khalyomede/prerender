@@ -17,6 +17,7 @@ class Prerendering {
 	protected _baseUrl: string;
 	protected _timeout: number;
 	protected _logger;
+	protected _currentRoute: Route;
 
 	public constructor() {
 		this._route = null;
@@ -27,6 +28,7 @@ class Prerendering {
 		this._logger = fancyFormatLog({
 			format: "YYYY-MM-DD HH:mm:ss:ms"
 		});
+		this._currentRoute = null;
 
 		this._addColorsToCliColor();
 	}
@@ -226,12 +228,11 @@ class Prerendering {
 		}
 
 		for (const route of routes) {
-			const routeUrl = this.getBaseUrl() + route.getUrl();
+			this._currentRoute = route;
+
+			const routeUrl = this._getCurrentRouteUrl();
 			const coloredRouteUrl = cliColor.green(routeUrl);
-			const contentPath =
-				this.getFolderPath() +
-				route.getCleanUrl().replace(/^\/$/, "") +
-				"/index.html";
+			const contentPath = this._getCurrentRouteFilePath();
 			const coloredContentPath = cliColor.green(contentPath);
 			const contentFolderPath = dirname(contentPath);
 			const timeout = this.gettimeout();
@@ -545,6 +546,20 @@ class Prerendering {
 	protected _addColorsToCliColor(): void {
 		cliColor.orange = cliColor.xterm(203);
 	}
+
+	protected _getCurrentRouteUrl(): string {
+		return this.getBaseUrl() + this._currentRoute.getUrl();
+	}
+
+	protected _getCurrentRouteFilePath(): string {
+		const cleanUrl = this._currentRoute.getCleanUrl();
+
+		return cleanUrl.endsWith(".html")
+			? this.getFolderPath() + cleanUrl
+			: this.getFolderPath() + cleanUrl.replace(/^\/$/, "") + "/index.html";
+	}
+
+	protected _getContentPath(): string {}
 }
 
 export default Prerendering;
