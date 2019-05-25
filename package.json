@@ -32,7 +32,8 @@
 	"scripts": {
 		"start": "gulp start",
 		"build": "gulp build && node script/generate-api-doc.js",
-		"test": "nyc mocha test --require @babel/register && npx stryker run",
+		"test": "nyc mocha test --require @babel/register",
+		"mutate": "npx stryker run",
 		"babel": "babel-node"
 	},
 	"dependencies": {
