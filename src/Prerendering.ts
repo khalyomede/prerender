@@ -558,8 +558,6 @@ class Prerendering {
 			? this.getFolderPath() + cleanUrl
 			: this.getFolderPath() + cleanUrl.replace(/^\/$/, "") + "/index.html";
 	}
-
-	protected _getContentPath(): string {}
 }
 
 export default Prerendering;
