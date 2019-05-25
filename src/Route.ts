@@ -106,6 +106,13 @@ class Route {
 	 * Returns the URL without query strings (useful to save a clean filename).
 	 *
 	 * @return {String}
+	 * @example
+	 * import { Route } from "@khalyomede/prerender";
+	 *
+	 * const route = new Route();
+	 *
+	 * const cleanUrl = route.setUrl("/?page=1").getCleanUrl();
+	 * @since 0.1.0
 	 */
 	public getCleanUrl(): string {
 		return parse(this._url).pathname;
