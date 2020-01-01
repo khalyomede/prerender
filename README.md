@@ -1,3 +1,7 @@
+# DEPRECATION
+
+This library will no longer be maintained. Please see [hypercharged](https://npmjs.com/package/hypercharged) for an up-to-date, and more flexible alternative.
+
 # Prerender
 
 Prerenders your website into a static, SEO friendly, HTML version.
@@ -206,13 +210,13 @@ import { Route, Prerendering } from "@khalyomede/prerender";
 const home = new Route().setUrl("/").addSelectorToWaitFor("h1");
 const about = new Route().setUrl("/about").addSelectorToWaitFor("p");
 const contactUs = new Route()
-	.setUrl("/contact-us")
-	.setSelectorsToWaitFor(["h1", "p"])
-	.setInactive();
+  .setUrl("/contact-us")
+  .setSelectorsToWaitFor(["h1", "p"])
+  .setInactive();
 const news = new Route()
-	.setUrl("/news?utm_medium=social")
-	.addSelectorToWaitFor("h1")
-	.setInactive();
+  .setUrl("/news?utm_medium=social")
+  .addSelectorToWaitFor("h1")
+  .setInactive();
 
 const prerendering = new Prerendering();
 
